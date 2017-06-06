@@ -25,15 +25,15 @@ public class BatchInsertThread implements Runnable{
 	public static void main(String[] args) {
 		Executor executor=Executors.newSingleThreadExecutor();
 		
-		int limit=15630;
+		int limit=100000;
 		
-		for (int i = 0; i <= 50000; i++) {
-			limit+=10;
+		while (limit>0) {
 			BatchInsert bi=new BatchInsert();
 			bi.setLimit(limit);
 			executor.execute(new BatchInsertThread(bi));
+			limit-=1000;
+			
 		}
-		
 	}
 
 	public void run() { 
@@ -41,7 +41,7 @@ public class BatchInsertThread implements Runnable{
 			try {
 				for (int i = 0; i < loop; i++) {
 					System.out.println("第--"+i+"---次---------------------开始");
-					batchInsert.deleteAll();
+					//batchInsert.deleteAll();
 					batchInsert.batchInsertWithTransaction();
 					System.out.println("第--"+i+"---次---------------------结束");
 				}
